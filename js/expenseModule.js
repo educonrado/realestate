@@ -48,20 +48,22 @@ export class ExpenseModule { // Asegúrate de que esta clase esté exportada
 
     /**
      * Maneja el registro de una venta para un proyecto.
+     * Ya no cierra el proyecto automáticamente.
      * @param {string} projectId - El ID del proyecto al que se registra la venta.
      * @param {object} saleData - Los datos de la venta (monto y fecha).
      */
     async handleAddSale(projectId, saleData) {
         try {
             // Actualizar el proyecto con el monto y fecha de venta
+            // CAMBIO CLAVE: Eliminado isClosed: true
             await this.db.updateDocument('projects', projectId, { 
                 saleAmount: saleData.saleAmount,
-                saleDate: saleData.saleDate,
-                isClosed: true // La venta implica que el proyecto se cierra
+                saleDate: saleData.saleDate
             });
             this.ui.closeModal('sale-modal');
-            this.ui.navigateTo('nav-dashboard'); // Volver al dashboard o detalles del proyecto actualizado
-            console.log("Venta registrada exitosamente y proyecto cerrado.");
+            // CAMBIO CLAVE: Recargar los detalles del proyecto actual para ver las métricas actualizadas
+            this.ui.loadProjectDetails(projectId); 
+            console.log("Venta registrada exitosamente. El proyecto no se ha cerrado automáticamente.");
         } catch (error) {
             console.error("Error al registrar venta:", error);
             // ui.showError('Error al registrar la venta.');
