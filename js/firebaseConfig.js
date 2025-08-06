@@ -3,5 +3,5 @@
 // Configuración de Firebase (asegúrate de reemplazar con tus credenciales)
 
 export const firebaseConfig = {
-  
+
 };

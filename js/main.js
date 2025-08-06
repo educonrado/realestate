@@ -1,5 +1,3 @@
-// js/main.js
-
 // Importa todas las clases necesarias de sus respectivos módulos
 import { DatabaseManager } from './db.js';
 import { UIManager } from './ui.js';
@@ -16,8 +14,25 @@ let expenseModule;
 let reportModule;
 let configModule;
 
+function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu-items');
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+    }
+}
+
 // Espera a que el DOM esté completamente cargado antes de inicializar la aplicación
 document.addEventListener('DOMContentLoaded', async () => {
+
+    // Lógica del menú de hamburguesa para abrir/cerrar
+    const hamburgerBtn = document.getElementById('hamburger-menu');
+    const mobileMenu = document.getElementById('mobile-menu-items');
+
+    if (hamburgerBtn && mobileMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 
     // Inicializa el gestor de la base de datos
     dbManager = new DatabaseManager();
@@ -29,18 +44,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     reportModule = new ReportModule(dbManager);
     configModule = new ConfigModule(dbManager, uiManager);
 
-    // Asegura que existan categorías por defecto antes de continuar
     await configModule.ensureDefaultCategories();
 
-    // Pasamos las referencias de los módulos a la UI para que pueda interactuar con ellos
     uiManager.setModules({ projectModule, expenseModule, reportModule, configModule });
 
-    // Configura los eventos de los botones de navegación
     document.getElementById('nav-dashboard').addEventListener('click', () => uiManager.navigateTo('nav-dashboard'));
     document.getElementById('nav-history').addEventListener('click', () => uiManager.navigateTo('nav-history'));
     document.getElementById('nav-reports').addEventListener('click', () => uiManager.navigateTo('nav-reports'));
     document.getElementById('nav-config').addEventListener('click', () => uiManager.navigateTo('nav-config'));
 
-    // Navega al Dashboard por defecto al cargar la aplicación
+    document.getElementById('nav-dashboard-mobile').addEventListener('click', () => {
+        uiManager.navigateTo('nav-dashboard');
+        closeMobileMenu();
+    });
+    document.getElementById('nav-history-mobile').addEventListener('click', () => {
+        uiManager.navigateTo('nav-history');
+        closeMobileMenu();
+    });
+    document.getElementById('nav-reports-mobile').addEventListener('click', () => {
+        uiManager.navigateTo('nav-reports');
+        closeMobileMenu();
+    });
+    document.getElementById('nav-config-mobile').addEventListener('click', () => {
+        uiManager.navigateTo('nav-config');
+        closeMobileMenu();
+    });
+
     uiManager.navigateTo('nav-dashboard');
 });
