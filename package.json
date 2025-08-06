@@ -1,0 +1,16 @@
+{
+  "name": "gestion-inmobiliaria",
+  "version": "1.0.0",
+  "description": "Aplicación web para la gestión financiera de proyectos inmobiliarios.",
+  "main": "index.html",
+  "scripts": {
+    "build:tailwind": "npx tailwindcss -i ./css/tailwind.css -o ./css/style.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "edu",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}
